@@ -19,8 +19,13 @@ def extract_transcript_details(youtube_video_url):
     try:
         video_id = youtube_video_url.split("=")[1]
         transcript_text = YouTubeTranscriptApi.get_transcript(video_id)
-        full_transcript = ' '.join([entry['text'] for entry in transcript_text])
-        return full_transcript
+        # full_transcript = ' '.join([entry['text'] for entry in transcript_text])
+
+        transcript = ""
+        for i in transcript_text:
+            transcript += " " + i["text"]
+
+        return transcript
     except Exception as e:
         raise e
 
