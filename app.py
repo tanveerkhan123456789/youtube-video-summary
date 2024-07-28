@@ -29,11 +29,12 @@ def generate_gemini_content(transcript_text, prompt):
     try:
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt + "\n\n" + transcript_text)
+        print("Response Object:", response)  # Debugging: Inspect response object
         # Validate response structure
         if response and hasattr(response, 'text'):
             return response.text
         else:
-            raise ValueError("The response object does not contain a 'text' attribute")
+            raise ValueError("The response object does not contain a 'text' attribute or is malformed")
     except Exception as e:
         raise e
 
