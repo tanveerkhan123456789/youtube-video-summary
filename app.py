@@ -17,10 +17,13 @@ You are a YouTube video summarizer. You will be taking the transcript text and s
 # Function to extract transcript details from YouTube videos
 def extract_transcript_details(youtube_video_url):
     try:
-        video_id = youtube_video_url.split("=")[1].split("&")[0]  # Ensure video ID extraction handles multiple parameters
+        video_id = youtube_video_url.split("=")[1]  # Ensure video ID extraction handles multiple parameters
         transcript_text = YouTubeTranscriptApi.get_transcript(video_id)
-        full_transcript = ' '.join([entry['text'] for entry in transcript_text])
-        return full_transcript
+        transcript = ""
+        for i in transcript_text:
+            transcript += " " + i["text"]
+
+        return transcript
     except Exception as e:
         raise e
 
