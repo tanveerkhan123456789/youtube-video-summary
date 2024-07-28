@@ -17,7 +17,7 @@ You are a YouTube video summarizer. You will be taking the transcript text and s
 # Function to extract transcript details from YouTube videos
 def extract_transcript_details(youtube_video_url):
     try:
-        video_id = youtube_video_url.split("=")[1]
+        video_id = youtube_video_url.split("=")[1].split("&")[0]  # Ensure video ID extraction handles multiple parameters
         transcript_text = YouTubeTranscriptApi.get_transcript(video_id)
         full_transcript = ' '.join([entry['text'] for entry in transcript_text])
         return full_transcript
@@ -29,7 +29,8 @@ def generate_gemini_content(transcript_text, prompt):
     try:
         model = genai.GenerativeModel("gemini-pro")
         response = model.generate_content(prompt + "\n\n" + transcript_text)
-        if hasattr(response, 'text'):
+        # Validate response structure
+        if response and hasattr(response, 'text'):
             return response.text
         else:
             raise ValueError("The response object does not contain a 'text' attribute")
@@ -50,9 +51,8 @@ st.title("YouTube Transcript to Detailed Notes Converter")
 youtube_link = st.text_input("Enter YouTube Video Link:")
 
 if youtube_link:
-    video_id = youtube_link.split("=")[1]
-    video_id_new = video_id.split("&")[0]
-    st.image(f"http://img.youtube.com/vi/{video_id_new}/0.jpg", use_column_width=True)
+    video_id = youtube_link.split("=")[1].split("&")[0]  # Ensure video ID extraction handles multiple parameters
+    st.image(f"http://img.youtube.com/vi/{video_id}/0.jpg", use_column_width=True)
 
 if st.button("Get Detailed Notes"):
     try:
