@@ -65,9 +65,9 @@ if st.button("Get Detailed Notes"):
         if transcript_text:
             try:
                 english_summary = generate_gemini_content(transcript_text, prompt)
-                # urdu_summary = translate_to_urdu(english_summary)
+                urdu_summary = translate_to_urdu(english_summary)
                 st.markdown("## Detailed Notes in Urdu:")
-                st.write(english_summary)
+                st.write(urdu_summary)
             except Exception as e:
                 st.error(f"Error generating summary: {e}")
         else:
